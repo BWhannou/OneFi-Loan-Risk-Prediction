@@ -1,0 +1,70 @@
+import googlemaps
+gmaps = googlemaps.Client(key='AIzaSyAFo6Eek7kBHuR7AuaRRVOe6Jr0B9j8hMk')
+
+reverse_geocode_result = gmaps.reverse_geocode((7.119403, 3.325598))
+
+c=0
+demographics['lg'] = 0
+for i,j in zip(demographics['latitude_gps'],demographics['longitude_gps']):
+    lg=gmaps.reverse_geocode((i, j))
+    if lg is not None:
+        demographics.iloc[c,10] = lg[0]['address_components'][3]['long_name']
+    else:
+        demographics.iloc[c,10] = None
+    c=c+1
+
+------------
+# Initialize different regression algorithms
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+
+LR = LogisticRegression()
+random_forest = RandomForestClassifier(max_depth=3)
+KNN = KNeighborsClassifier()
+SVM = SVC()
+
+models = [LR, random_forest, KNN, SVM]
+model_name = ['LR','random_forest','KNN','SVM']
+# scorer = make_scorer(r2_score)
+result = {}
+
+for name, model in enumerate(models):
+    
+    model.fit(X,Y)
+    train_score = model.score(X,Y)
+    cv_score = cross_val_score(model, X, Y,cv=4, scoring = 'accuracy')
+    name = model_name[name]
+    result[name] = [train_score,cv_score.mean()]
+
+for model_scores in result:
+    print (model_scores, result[model_scores])
+    
+ ------------
+ # from imblearn.over_sampling import SMOTE
+# from imblearn.under_sampling import RandomUnderSampler
+
+
+# smote_algo = SMOTE(random_state=123)
+# X_smote,Y_smote = smote_algo.fit_sample(X, Y)
+# X_smote = pd.DataFrame(data=X_smote,columns=columns )
+# Y_smote = pd.DataFrame(data=Y_smote,columns=["good_bad_flag"])
+
+# rus = RandomUnderSampler()
+# X_resampled, Y_resampled = rus.fit_sample(X, Y)
+# X_resampled = pd.DataFrame(data=X_resampled,columns=columns )
+# Y_resampled = pd.DataFrame(data=Y_resampled,columns=["good_bad_flag"])
+# # smote_data = smote_data_X
+# # smote_data["Class"] = smote_data_Y["Class"]
+--------------
+
+# count_of_classes = pd.value_counts(Y_resampled['good_bad_flag'], sort = True).sort_index()
+# count_of_classes.plot(kind = 'bar')
+# plt.title("Class Histogram")
+# plt.xlabel("Class")
+# plt.ylabel("Frequency")
+
+# # Showing ratio
+# print("Percentage of bad loans: ", len(Y_resampled[Y_resampled['good_bad_flag'] == 0])/len(Y_resampled))
+# print("Percentage of good loans: ", len(Y_resampled[Y_resampled['good_bad_flag'] == 1])/len(Y_resampled))
+# print("Total number of loans in balanced data: ", len(Y_resampled))
