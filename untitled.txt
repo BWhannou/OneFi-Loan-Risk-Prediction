@@ -68,3 +68,33 @@ for model_scores in result:
 # print("Percentage of bad loans: ", len(Y_resampled[Y_resampled['good_bad_flag'] == 0])/len(Y_resampled))
 # print("Percentage of good loans: ", len(Y_resampled[Y_resampled['good_bad_flag'] == 1])/len(Y_resampled))
 # print("Total number of loans in balanced data: ", len(Y_resampled))
+
+--------------
+# # First get all referees from referredby column in data
+# referrers = data['referredby'].dropna(axis=0)
+# referrers_list = pd.DataFrame()
+# referrers_list['customerid'] = referrers
+# referrers_list = referrers_list.reset_index()
+# referrers_list['ref_count'] = 1
+# referrers_list = referrers_list.groupby('customerid').sum()
+# referrers_list = referrers_list.reset_index()
+# referrers_list_data = referrers_list.drop('index',axis=1)
+# referrers_list_data = referrers_list_data.iloc[1:,:]
+# referrers_list = referrers_list_data
+# # Then get all referees from referredby column in previous_loans
+# referrers = previous_loans['referredby'].dropna(axis=0)
+# referrers_list = pd.DataFrame()
+# referrers_list['customerid'] = referrers
+# referrers_list = referrers_list.reset_index()
+# referrers_list['ref_count'] = 1
+# referrers_list = referrers_list.groupby('customerid').sum()
+# referrers_list = referrers_list.reset_index()
+# referrers_list_prev = referrers_list.drop('index',axis=1)
+
+# # Join the two referee lists
+# frames = [referrers_list_data,referrers_list_prev ]
+# referees_list = pd.concat(frames)
+
+# referrers_list = referrers_list.groupby('customerid').sum()
+# referrers_list = referrers_list.reset_index()
+# referrers_list = referrers_list.drop('index',axis=1)
